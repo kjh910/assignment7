@@ -1,7 +1,7 @@
 import { CoreEntity } from './core.entity';
 export declare enum UserRole {
-    Host = "Host",
-    Listener = "Listener"
+    'Host' = 0,
+    'Listener' = 1
 }
 export declare class User extends CoreEntity {
     email: string;

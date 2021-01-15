@@ -18,8 +18,8 @@ const bcrypt = require("bcrypt");
 const common_1 = require("@nestjs/common");
 var UserRole;
 (function (UserRole) {
-    UserRole["Host"] = "Host";
-    UserRole["Listener"] = "Listener";
+    UserRole[UserRole["Host"] = 0] = "Host";
+    UserRole[UserRole["Listener"] = 1] = "Listener";
 })(UserRole = exports.UserRole || (exports.UserRole = {}));
 graphql_1.registerEnumType(UserRole, { name: 'UserRole' });
 let User = class User extends core_entity_1.CoreEntity {
@@ -61,7 +61,8 @@ __decorate([
 __decorate([
     typeorm_1.Column({ type: 'simple-enum', enum: UserRole }),
     graphql_1.Field(type => UserRole),
-    __metadata("design:type", String)
+    class_validator_1.IsEnum(UserRole),
+    __metadata("design:type", Number)
 ], User.prototype, "role", void 0);
 __decorate([
     typeorm_1.BeforeInsert(),
