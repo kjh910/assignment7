@@ -1,6 +1,5 @@
 import { Module, RequestMethod, MiddlewareConsumer } from '@nestjs/common';
 // import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PodcastsModule } from './podcast/podcasts.module';
 import { TypeOrmModule } from '@nestjs/typeorm';

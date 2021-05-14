@@ -47,21 +47,19 @@ let PodcastsService = class PodcastsService {
             };
         }
         catch (e) {
-            console.log(e);
             return this.InternalServerErrorOutput;
         }
     }
     async createPodcast({ title, category, }) {
         try {
-            const newPodcast = this.podcastRepository.create({ title, category });
+            const newPodcast = await this.podcastRepository.create({ title, category });
             const { id } = await this.podcastRepository.save(newPodcast);
             return {
                 ok: true,
-                id,
+                id
             };
         }
         catch (e) {
-            console.log(e);
             return this.InternalServerErrorOutput;
         }
     }
@@ -80,7 +78,6 @@ let PodcastsService = class PodcastsService {
             };
         }
         catch (e) {
-            console.log(e);
             return this.InternalServerErrorOutput;
         }
     }
@@ -94,7 +91,6 @@ let PodcastsService = class PodcastsService {
             return { ok };
         }
         catch (e) {
-            console.log(e);
             return this.InternalServerErrorOutput;
         }
     }
@@ -117,20 +113,24 @@ let PodcastsService = class PodcastsService {
             return { ok };
         }
         catch (e) {
-            console.log(e);
             return this.InternalServerErrorOutput;
         }
     }
     async getEpisodes(podcastId) {
         try {
-            const { podcast, ok, error } = await this.getPodcast(podcastId);
-            if (!ok) {
-                return { ok, error };
+            if (podcastId >= 0) {
+                const { podcast, ok, error } = await this.getPodcast(podcastId);
+                if (!ok) {
+                    return { ok, error };
+                }
+                return {
+                    ok: true,
+                    episodes: podcast.episodes,
+                };
             }
-            return {
-                ok: true,
-                episodes: podcast.episodes,
-            };
+            if (podcastId < 0) {
+                throw new Error();
+            }
         }
         catch (e) {
             console.log(e);
@@ -156,7 +156,6 @@ let PodcastsService = class PodcastsService {
             };
         }
         catch (e) {
-            console.log(e);
             return this.InternalServerErrorOutput;
         }
     }
@@ -175,7 +174,6 @@ let PodcastsService = class PodcastsService {
             };
         }
         catch (e) {
-            console.log(e);
             return this.InternalServerErrorOutput;
         }
     }
@@ -192,7 +190,6 @@ let PodcastsService = class PodcastsService {
             return { ok: true };
         }
         catch (e) {
-            console.log(e);
             return this.InternalServerErrorOutput;
         }
     }
@@ -206,12 +203,12 @@ let PodcastsService = class PodcastsService {
             if (!ok) {
                 return { ok, error };
             }
+            console.log(Object.assign(Object.assign({}, episode), rest));
             const updatedEpisode = Object.assign(Object.assign({}, episode), rest);
             await this.episodeRepository.save(updatedEpisode);
             return { ok: true };
         }
         catch (e) {
-            console.log(e);
             return this.InternalServerErrorOutput;
         }
     }

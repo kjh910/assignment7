@@ -21,6 +21,7 @@ import {
 } from './dtos/podcast.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { captureRejectionSymbol } from 'events';
 
 @Injectable()
 export class PodcastsService {
@@ -44,7 +45,6 @@ export class PodcastsService {
         podcasts,
       };
     } catch (e) {
-      console.log(e);
       return this.InternalServerErrorOutput;
     }
   }
@@ -54,14 +54,13 @@ export class PodcastsService {
     category,
   }: CreatePodcastInput): Promise<CreatePodcastOutput> {
     try {
-      const newPodcast = this.podcastRepository.create({ title, category });
+      const newPodcast = await this.podcastRepository.create({ title, category });
       const { id } = await this.podcastRepository.save(newPodcast);
       return {
         ok: true,
-        id,
+        id
       };
     } catch (e) {
-      console.log(e);
       return this.InternalServerErrorOutput;
     }
   }
@@ -83,7 +82,6 @@ export class PodcastsService {
         podcast,
       };
     } catch (e) {
-      console.log(e);
       return this.InternalServerErrorOutput;
     }
   }
@@ -97,7 +95,6 @@ export class PodcastsService {
       await this.podcastRepository.delete({ id });
       return { ok };
     } catch (e) {
-      console.log(e);
       return this.InternalServerErrorOutput;
     }
   }
@@ -123,21 +120,24 @@ export class PodcastsService {
       await this.podcastRepository.save(updatedPodcast);
       return { ok };
     } catch (e) {
-      console.log(e);
       return this.InternalServerErrorOutput;
     }
   }
 
   async getEpisodes(podcastId: number): Promise<EpisodesOutput> {
     try {
-      const { podcast, ok, error } = await this.getPodcast(podcastId);
-      if (!ok) {
-        return { ok, error };
+      if(podcastId >= 0){
+        const { podcast, ok, error } = await this.getPodcast(podcastId);
+        if (!ok) {
+          return { ok, error };
+        }
+        return {
+          ok: true,
+          episodes: podcast.episodes,
+        };
+      } if(podcastId < 0){
+        throw new Error();
       }
-      return {
-        ok: true,
-        episodes: podcast.episodes,
-      };
     } catch (e) {
       console.log(e);
       return this.InternalServerErrorOutput;
@@ -165,7 +165,6 @@ export class PodcastsService {
         episode,
       };
     } catch (e) {
-      console.log(e);
       return this.InternalServerErrorOutput;
     }
   }
@@ -182,13 +181,13 @@ export class PodcastsService {
       }
       const newEpisode = this.episodeRepository.create({ title, category });
       newEpisode.podcast = podcast;
+
       const { id } = await this.episodeRepository.save(newEpisode);
       return {
         ok: true,
         id,
       };
     } catch (e) {
-      console.log(e);
       return this.InternalServerErrorOutput;
     }
   }
@@ -208,7 +207,6 @@ export class PodcastsService {
       await this.episodeRepository.delete({ id: episode.id });
       return { ok: true };
     } catch (e) {
-      console.log(e);
       return this.InternalServerErrorOutput;
     }
   }
@@ -226,11 +224,11 @@ export class PodcastsService {
       if (!ok) {
         return { ok, error };
       }
+      console.log({...episode,...rest});
       const updatedEpisode = { ...episode, ...rest };
       await this.episodeRepository.save(updatedEpisode);
       return { ok: true };
     } catch (e) {
-      console.log(e);
       return this.InternalServerErrorOutput;
     }
   }

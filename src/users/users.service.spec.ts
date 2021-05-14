@@ -89,12 +89,6 @@ describe('UsersService', () => {
       usersRepository.findOne.mockResolvedValue(undefined);
       usersRepository.create.mockReturnValue(createAccountArgs);
       usersRepository.save.mockResolvedValue(createAccountArgs);
-      // verificationsRepository.create.mockReturnValue({
-      //   user: createAccountArgs,
-      // });
-      // verificationsRepository.save.mockResolvedValue({
-      //   code: 'code',
-      // });
 
       const result = await service.createAccount(createAccountArgs);
 
@@ -104,21 +98,6 @@ describe('UsersService', () => {
       expect(usersRepository.save).toHaveBeenCalledTimes(1);
       expect(usersRepository.save).toHaveBeenCalledWith(createAccountArgs);
 
-      // expect(verificationsRepository.create).toHaveBeenCalledTimes(1);
-      // expect(verificationsRepository.create).toHaveBeenCalledWith({
-      //   user: createAccountArgs,
-      // });
-
-      // expect(verificationsRepository.save).toHaveBeenCalledTimes(1);
-      // expect(verificationsRepository.save).toHaveBeenCalledWith({
-      //   user: createAccountArgs,
-      // });
-
-      // expect(mailService.sendVerificationEmail).toHaveBeenCalledTimes(1);
-      // expect(mailService.sendVerificationEmail).toHaveBeenCalledWith(
-      //   expect.any(String),
-      //   expect.any(String),
-      // );
       expect(result).toEqual({ ok: true, error: null, });
     });
 

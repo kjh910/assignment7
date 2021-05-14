@@ -89,6 +89,9 @@ let EpisodeResolver = class EpisodeResolver {
     getEpisodes(podcastSearchInput) {
         return this.podcastService.getEpisodes(podcastSearchInput.id);
     }
+    getEpisode(episodesSearchInput) {
+        return this.podcastService.getEpisode(episodesSearchInput);
+    }
     createEpisode(createEpisodeInput) {
         return this.podcastService.createEpisode(createEpisodeInput);
     }
@@ -106,6 +109,13 @@ __decorate([
     __metadata("design:paramtypes", [podcast_dto_1.PodcastSearchInput]),
     __metadata("design:returntype", Promise)
 ], EpisodeResolver.prototype, "getEpisodes", null);
+__decorate([
+    graphql_1.Query(returns => podcast_dto_1.GetEpisodeOutput),
+    __param(0, graphql_1.Args('input')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [podcast_dto_1.EpisodesSearchInput]),
+    __metadata("design:returntype", Promise)
+], EpisodeResolver.prototype, "getEpisode", null);
 __decorate([
     graphql_1.Mutation(returns => create_episode_dto_1.CreateEpisodeOutput),
     __param(0, graphql_1.Args('input')),
