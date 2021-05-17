@@ -9,24 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoginOutput = exports.LoginInput = void 0;
-const graphql_1 = require("@nestjs/graphql");
-const users_entity_1 = require("../entities/users.entity");
-const output_dto_1 = require("./output.dto");
-let LoginInput = class LoginInput extends graphql_1.PickType(users_entity_1.Users, ['email', 'password']) {
-};
-LoginInput = __decorate([
-    graphql_1.InputType()
-], LoginInput);
-exports.LoginInput = LoginInput;
-let LoginOutput = class LoginOutput extends output_dto_1.CoreOutput {
+exports.AppController = void 0;
+const common_1 = require("@nestjs/common");
+const app_service_1 = require("./app.service");
+let AppController = class AppController {
+    constructor(appService) {
+        this.appService = appService;
+    }
+    getHello() {
+        return this.appService.getHello();
+    }
 };
 __decorate([
-    graphql_1.Field(type => String, { nullable: true }),
-    __metadata("design:type", String)
-], LoginOutput.prototype, "token", void 0);
-LoginOutput = __decorate([
-    graphql_1.ObjectType()
-], LoginOutput);
-exports.LoginOutput = LoginOutput;
-//# sourceMappingURL=login.dto.js.map
+    common_1.Get(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", String)
+], AppController.prototype, "getHello", null);
+AppController = __decorate([
+    common_1.Controller(),
+    __metadata("design:paramtypes", [app_service_1.AppService])
+], AppController);
+exports.AppController = AppController;
+//# sourceMappingURL=app.controller.js.map

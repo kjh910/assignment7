@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = exports.UserRole = void 0;
+exports.Users = exports.UserRole = void 0;
 const graphql_1 = require("@nestjs/graphql");
 const class_validator_1 = require("class-validator");
 const typeorm_1 = require("typeorm");
@@ -22,7 +22,7 @@ var UserRole;
     UserRole["Listener"] = "Listener";
 })(UserRole = exports.UserRole || (exports.UserRole = {}));
 graphql_1.registerEnumType(UserRole, { name: 'UserRole' });
-let User = class User extends core_entity_1.CoreEntity {
+let Users = class Users extends core_entity_1.CoreEntity {
     async hashPassword() {
         if (!this.password) {
             return;
@@ -51,29 +51,29 @@ __decorate([
     graphql_1.Field(type => String),
     class_validator_1.IsEmail(),
     __metadata("design:type", String)
-], User.prototype, "email", void 0);
+], Users.prototype, "email", void 0);
 __decorate([
     typeorm_1.Column(),
     graphql_1.Field(type => String),
     class_validator_1.IsString(),
     __metadata("design:type", String)
-], User.prototype, "password", void 0);
+], Users.prototype, "password", void 0);
 __decorate([
     typeorm_1.Column({ type: 'simple-enum', enum: UserRole }),
     graphql_1.Field(type => UserRole),
     __metadata("design:type", String)
-], User.prototype, "role", void 0);
+], Users.prototype, "role", void 0);
 __decorate([
     typeorm_1.BeforeInsert(),
     typeorm_1.BeforeUpdate(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
-], User.prototype, "hashPassword", null);
-User = __decorate([
+], Users.prototype, "hashPassword", null);
+Users = __decorate([
     graphql_1.InputType('UserInputType', { isAbstract: true }),
     graphql_1.ObjectType(),
     typeorm_1.Entity()
-], User);
-exports.User = User;
-//# sourceMappingURL=user.entity.js.map
+], Users);
+exports.Users = Users;
+//# sourceMappingURL=users.entity.js.map

@@ -14,7 +14,6 @@ const graphql_1 = require("@nestjs/graphql");
 const output_dto_1 = require("./output.dto");
 const podcast_entity_1 = require("../entities/podcast.entity");
 const class_validator_1 = require("class-validator");
-const episode_entity_1 = require("../entities/episode.entity");
 let GetAllPodcastsOutput = class GetAllPodcastsOutput extends output_dto_1.CoreOutput {
 };
 __decorate([
@@ -67,14 +66,7 @@ EpisodesSearchInput = __decorate([
     graphql_1.InputType()
 ], EpisodesSearchInput);
 exports.EpisodesSearchInput = EpisodesSearchInput;
-let GetEpisodeOutput = class GetEpisodeOutput extends output_dto_1.CoreOutput {
-};
-__decorate([
-    graphql_1.Field(type => podcast_entity_1.Podcast, { nullable: true }),
-    __metadata("design:type", episode_entity_1.Episode)
-], GetEpisodeOutput.prototype, "episode", void 0);
-GetEpisodeOutput = __decorate([
-    graphql_1.ObjectType()
-], GetEpisodeOutput);
+class GetEpisodeOutput extends output_dto_1.CoreOutput {
+}
 exports.GetEpisodeOutput = GetEpisodeOutput;
 //# sourceMappingURL=podcast.dto.js.map

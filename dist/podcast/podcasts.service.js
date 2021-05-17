@@ -52,11 +52,11 @@ let PodcastsService = class PodcastsService {
     }
     async createPodcast({ title, category, }) {
         try {
-            const newPodcast = await this.podcastRepository.create({ title, category });
+            const newPodcast = this.podcastRepository.create({ title, category });
             const { id } = await this.podcastRepository.save(newPodcast);
             return {
                 ok: true,
-                id
+                id,
             };
         }
         catch (e) {
@@ -117,47 +117,31 @@ let PodcastsService = class PodcastsService {
         }
     }
     async getEpisodes(podcastId) {
-        try {
-            if (podcastId >= 0) {
-                const { podcast, ok, error } = await this.getPodcast(podcastId);
-                if (!ok) {
-                    return { ok, error };
-                }
-                return {
-                    ok: true,
-                    episodes: podcast.episodes,
-                };
-            }
-            if (podcastId < 0) {
-                throw new Error();
-            }
+        const { podcast, ok, error } = await this.getPodcast(podcastId);
+        if (!ok) {
+            return { ok, error };
         }
-        catch (e) {
-            console.log(e);
-            return this.InternalServerErrorOutput;
-        }
+        return {
+            ok: true,
+            episodes: podcast.episodes,
+        };
     }
     async getEpisode({ podcastId, episodeId, }) {
-        try {
-            const { episodes, ok, error } = await this.getEpisodes(podcastId);
-            if (!ok) {
-                return { ok, error };
-            }
-            const episode = episodes.find(episode => episode.id === episodeId);
-            if (!episode) {
-                return {
-                    ok: false,
-                    error: `Episode with id ${episodeId} not found in podcast with id ${podcastId}`,
-                };
-            }
+        const { episodes, ok, error } = await this.getEpisodes(podcastId);
+        if (!ok) {
+            return { ok, error };
+        }
+        const episode = episodes.find(episode => episode.id === episodeId);
+        if (!episode) {
             return {
-                ok: true,
-                episode,
+                ok: false,
+                error: `Episode with id ${episodeId} not found in podcast with id ${podcastId}`,
             };
         }
-        catch (e) {
-            return this.InternalServerErrorOutput;
-        }
+        return {
+            ok: true,
+            episode,
+        };
     }
     async createEpisode({ podcastId, title, category, }) {
         try {
@@ -203,7 +187,6 @@ let PodcastsService = class PodcastsService {
             if (!ok) {
                 return { ok, error };
             }
-            console.log(Object.assign(Object.assign({}, episode), rest));
             const updatedEpisode = Object.assign(Object.assign({}, episode), rest);
             await this.episodeRepository.save(updatedEpisode);
             return { ok: true };

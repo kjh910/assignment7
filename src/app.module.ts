@@ -1,5 +1,4 @@
 import { Module, RequestMethod, MiddlewareConsumer } from '@nestjs/common';
-// import { AppController } from './app.controller';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PodcastsModule } from './podcast/podcasts.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -31,8 +30,6 @@ import { JwtMiddleware } from './jwt/jwt.middleware';
     PodcastsModule,
     UsersModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

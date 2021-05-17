@@ -14,14 +14,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
-const user_entity_1 = require("./entities/user.entity");
+const users_entity_1 = require("./entities/users.entity");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
-const jwt_service_1 = require("../jwt/jwt.service");
 let UsersService = class UsersService {
-    constructor(users, jwtService) {
+    constructor(users) {
         this.users = users;
-        this.jwtService = jwtService;
     }
     async createAccount({ email, password, role, }) {
         try {
@@ -60,61 +58,23 @@ let UsersService = class UsersService {
                     error: 'Wrong password',
                 };
             }
-            const token = this.jwtService.sign(user.id);
             return {
                 ok: true,
-                token,
+                token: `testToken`,
             };
         }
         catch (error) {
             return {
                 ok: false,
-                error: 'error',
-            };
-        }
-    }
-    async findById(id) {
-        try {
-            const user = await this.users.findOneOrFail({ id });
-            return {
-                ok: true,
-                user,
-            };
-        }
-        catch (error) {
-            return {
-                ok: false,
-                error: 'User Not Found',
-            };
-        }
-    }
-    async editProfile(userId, { email, password }) {
-        try {
-            const user = await this.users.findOne(userId);
-            if (email) {
-                user.email = email;
-            }
-            if (password) {
-                user.password = password;
-            }
-            await this.users.save(user);
-            return {
-                ok: true,
-            };
-        }
-        catch (error) {
-            return {
-                ok: false,
-                error: 'Could not update profile',
+                error,
             };
         }
     }
 };
 UsersService = __decorate([
     common_1.Injectable(),
-    __param(0, typeorm_1.InjectRepository(user_entity_1.User)),
-    __metadata("design:paramtypes", [typeorm_2.Repository,
-        jwt_service_1.JwtService])
+    __param(0, typeorm_1.InjectRepository(users_entity_1.Users)),
+    __metadata("design:paramtypes", [typeorm_2.Repository])
 ], UsersService);
 exports.UsersService = UsersService;
 //# sourceMappingURL=users.service.js.map

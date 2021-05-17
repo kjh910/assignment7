@@ -3,7 +3,7 @@ export declare enum UserRole {
     Host = "Host",
     Listener = "Listener"
 }
-export declare class User extends CoreEntity {
+export declare class Users extends CoreEntity {
     email: string;
     password: string;
     role: UserRole;
